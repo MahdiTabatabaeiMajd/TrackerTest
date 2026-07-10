@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      CSP: restricts fetch() calls to only the two Open-Meteo domains.
+      Nothing else can send data out — even if injected code tries to.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+                   script-src 'self';
+                   style-src 'self';
+                   connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com;"
+    />
+    <title>FlareWatch — INIA App V2</title>
+    <link rel="stylesheet" href="css/v2.css" />
+  </head>
+
+  <body>
+
+    <!-- ══════════════ SPLASH SCREEN ══════════════════════════ -->
+    <div id="splash-screen">
+      <canvas id="splash-canvas"></canvas>
+      <div class="splash-text">
+        <div class="splash-title">FlareWatch</div>
+        <div class="splash-sub">Track your skin. See what matters.</div>
+        <div class="splash-org">INIA Biosciences · V2</div>
+      </div>
+      <div class="splash-progress"></div>
+      <button class="splash-skip" id="splashSkip">Skip →</button>
+    </div>
+
+    <div class="app-container">
+      <div class="app-header">
+        <h1>FlareWatch</h1>
+        <p>Evidence-based psoriasis tracker · INIA Biosciences <strong>(V2)</strong></p>
+        <button
+          id="btnDemo"
+          style="
+            margin-top: 8px;
+            font-size: 0.72rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px dashed #cbd5e0;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            font-family: inherit;
+          "
+        >
+          Load 30-day demo
+        </button>
+      </div>
+
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="log">Log</button>
+        <button class="tab-btn" data-tab="history">History</button>
+        <button class="tab-btn" data-tab="treatments">Treatments</button>
+        <button class="tab-btn" data-tab="trends">Trends</button>
+        <button class="tab-btn" data-tab="insights">Insights</button>
+      </nav>
+
+      <!-- ══════════════ TAB: LOG ══════════════════════════════ -->
+      <section id="tab-log" class="tab-panel active">
+        <div class="date-row">
+          <input type="date" id="logDate" />
+        </div>
+
+        <!-- Symptom severity -->
+        <div class="symptom-severity">
+          <p class="section-header">Symptom Severity</p>
+          <div class="symptom-grid">
+            <div class="symptom-card">
+              <div class="slider-row">
+                <label for="itching">Itch</label>
+                <input id="itching" type="range" min="0" max="10" value="0" />
+                <span id="itchingValue">0</span>
+              </div>
+              <div class="custom-select">
+                <button
+                  class="select-trigger"
+                  id="itchingTrigger"
+                  type="button"
+                >
+                  Add body parts <span class="trigger-arrow">▾</span>
+                </button>
+                <div class="select-panel" id="itchingPanel"></div>
+              </div>
+              <div class="part-tags" id="itchingTags"></div>
+            </div>
+
+            <div class="symptom-card">
+              <div class="slider-row">
+                <label for="pain">Pain</label>
+                <input id="pain" type="range" min="0" max="10" value="0" />
+                <span id="painValue">0</span>
+              </div>
+              <div class="custom-select">
+                <button class="select-trigger" id="painTrigger" type="button">
+                  Add body parts <span class="trigger-arrow">▾</span>
+                </button>
+                <div class="select-panel" id="painPanel"></div>
+              </div>
+              <div class="part-tags" id="painTags"></div>
+            </div>
+
+            <div class="symptom-card">
+              <div class="slider-row">
+                <label for="redness">Redness</label>
+                <input id="redness" type="range" min="0" max="10" value="0" />
+                <span id="rednessValue">0</span>
+              </div>
+              <div class="custom-select">
+                <button
+                  class="select-trigger"
+                  id="rednessTrigger"
+                  type="button"
+                >
+                  Add body parts <span class="trigger-arrow">▾</span>
+                </button>
+                <div class="select-panel" id="rednessPanel"></div>
+              </div>
+              <div class="part-tags" id="rednessTags"></div>
+            </div>
+
+            <div class="symptom-card">
+              <div class="slider-row">
+                <label for="scaling">Scaling</label>
+                <input id="scaling" type="range" min="0" max="10" value="0" />
+                <span id="scalingValue">0</span>
+              </div>
+              <div class="custom-select">
+                <button
+                  class="select-trigger"
+                  id="scalingTrigger"
+                  type="button"
+                >
+                  Add body parts <span class="trigger-arrow">▾</span>
+                </button>
+                <div class="select-panel" id="scalingPanel"></div>
+              </div>
+              <div class="part-tags" id="scalingTags"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Environment (auto-fetched) -->
+        <div class="env-section">
+          <div class="env-top">
+            <p class="section-header" style="margin-bottom: 0">Environment</p>
+            <button class="btn-fetch" id="btnFetchEnv">
+              📍 Fetch weather &amp; air quality
+            </button>
+          </div>
+          <p class="env-privacy">
+            Your location is rounded to ~10 km before being sent to Open-Meteo
+            (open-source API). Only the fetched measurements are saved — your
+            coordinates are never stored.
+          </p>
+          <div class="env-display" id="envDisplay">
+            <span class="env-placeholder"
+              >Click Fetch to load today's conditions</span
+            >
+          </div>
+        </div>
+
+        <!-- Lifestyle triggers -->
+        <div class="lifestyle-section">
+          <p class="section-header">Lifestyle &amp; Context</p>
+          <div class="lifestyle-grid">
+            <div class="trigger-card">
+              <div class="trigger-label">
+                <span>Stress level</span>
+                <span class="trigger-value" id="stressValue">0 / 10</span>
+              </div>
+              <input
+                class="trigger-slider"
+                type="range"
+                id="stressSlider"
+                min="0"
+                max="10"
+                value="0"
+                step="1"
+              />
+              <div class="trigger-scale">
+                <span>None</span><span>Moderate</span><span>Extreme</span>
+              </div>
+            </div>
+
+            <div class="trigger-card">
+              <div class="trigger-label">
+                <span>Sleep last night</span>
+                <span class="trigger-value" id="sleepValue">7 h</span>
+              </div>
+              <input
+                class="trigger-slider"
+                type="range"
+                id="sleepSlider"
+                min="2"
+                max="12"
+                value="7"
+                step="0.5"
+              />
+              <div class="trigger-scale">
+                <span>2 h</span><span>7 h</span><span>12 h</span>
+              </div>
+            </div>
+
+            <div class="trigger-row-2">
+              <div class="trigger-card">
+                <div class="trigger-label"><span>Alcohol</span></div>
+                <div class="step-group" id="alcoholGroup">
+                  <button class="step-btn active" data-value="0">None</button>
+                  <button class="step-btn" data-value="1">Light</button>
+                  <button class="step-btn" data-value="2">Moderate</button>
+                  <button class="step-btn" data-value="3">Heavy</button>
+                </div>
+              </div>
+              <div class="trigger-card">
+                <div class="trigger-label"><span>Exercise</span></div>
+                <div class="step-group" id="exerciseGroup">
+                  <button class="step-btn active" data-value="0">None</button>
+                  <button class="step-btn" data-value="1">Light</button>
+                  <button class="step-btn" data-value="2">Moderate</button>
+                  <button class="step-btn" data-value="3">Intense</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="trigger-row-3">
+              <div class="trigger-card">
+                <div class="trigger-label"><span>Smoking</span></div>
+                <div class="toggle-group" id="smokingGroup">
+                  <button class="toggle-btn active" data-value="0">No</button>
+                  <button class="toggle-btn" data-value="1">Yes</button>
+                </div>
+              </div>
+              <div class="trigger-card">
+                <div class="trigger-label"><span>Infection</span></div>
+                <div class="toggle-group" id="infectionGroup">
+                  <button class="toggle-btn active" data-value="0">No</button>
+                  <button class="toggle-btn" data-value="1">Yes</button>
+                </div>
+              </div>
+              <div class="trigger-card">
+                <div class="trigger-label"><span>Skin trauma</span></div>
+                <div class="toggle-group" id="koebnerGroup">
+                  <button class="toggle-btn active" data-value="0">No</button>
+                  <button class="toggle-btn" data-value="1">Yes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-row">
+          <button class="btn btnreview" id="btnReview">Review Entry</button>
+        </div>
+
+        <div id="symptomPanel">
+          <h3>Summary — <span id="dateLabel">-</span></h3>
+          <div id="summaryContent"></div>
+        </div>
+
+        <div class="w1status" id="w1status">
+          <p class="w1Text">
+            <img class="w1" src="AppImages/warning.png" alt="Warning" />
+            <span id="w1Text">-</span>
+          </p>
+        </div>
+
+        <div class="button-row" id="buttonRow">
+          <button class="btn btnclear" id="btnClear">Clear</button>
+          <button class="btn btnsave" id="btnSave">Save</button>
+        </div>
+      </section>
+
+      <!-- ══════════════ TAB: HISTORY ══════════════════════════ -->
+      <section id="tab-history" class="tab-panel">
+        <div id="history-list"></div>
+      </section>
+
+      <!-- ══════════════ TAB: TRENDS ═══════════════════════════ -->
+      <section id="tab-trends" class="tab-panel">
+        <div id="trends-container"></div>
+      </section>
+
+      <!-- ══════════════ TAB: TREATMENTS ══════════════════════ -->
+      <section id="tab-treatments" class="tab-panel">
+
+        <div class="treatment-add-row">
+          <button class="btn-add-treatment" id="btnAddTopical">＋ Topical steroid</button>
+          <button class="btn-add-treatment" id="btnAddBiologic">＋ Biologic</button>
+        </div>
+
+        <!-- Add-treatment form (hidden until a button above is clicked) -->
+        <form id="treatment-form" autocomplete="off">
+
+          <div class="type-radio-row">
+            <label><input type="radio" name="treatType" value="topical" checked /> Topical steroid</label>
+            <label><input type="radio" name="treatType" value="biologic" /> Biologic</label>
+          </div>
+
+          <!-- Topical fields -->
+          <div id="topical-fields">
+            <div class="form-row">
+              <div class="form-col">
+                <span class="form-label">Potency class</span>
+                <select id="treatPotency" class="form-select"></select>
+                <span class="form-note" id="potencyNote"></span>
+              </div>
+              <div class="form-col">
+                <span class="form-label">Drug</span>
+                <select id="treatDrugTopical" class="form-select"></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <span class="form-label">Body areas</span>
+                <div class="form-area-grid" id="treatAreaGrid">
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Scalp" /> Scalp</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Head" /> Head</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Neck" /> Neck</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Torso" /> Torso</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Left forearm" /> L. forearm</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Right forearm" /> R. forearm</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Left hand" /> L. hand</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Right hand" /> R. hand</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Left knee" /> L. knee</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Right knee" /> R. knee</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Left lower leg" /> L. lower leg</label>
+                  <label class="treat-area-label"><input class="treat-area-cb" type="checkbox" value="Right lower leg" /> R. lower leg</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Biologic fields -->
+          <div id="biologic-fields" style="display:none">
+            <div class="form-row">
+              <div class="form-col">
+                <span class="form-label">Mechanism class</span>
+                <select id="treatBioClass" class="form-select"></select>
+              </div>
+              <div class="form-col">
+                <span class="form-label">Drug</span>
+                <select id="treatDrugBiologic" class="form-select"></select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shared fields -->
+          <div class="form-row">
+            <div class="form-col">
+              <span class="form-label">Start date</span>
+              <input type="date" id="treatStart" class="form-input" />
+            </div>
+            <div class="form-col">
+              <span class="form-label">Stop date (leave blank if ongoing)</span>
+              <input type="date" id="treatStop" class="form-input" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-col">
+              <span class="form-label">Notes (optional)</span>
+              <input type="text" id="treatNotes" class="form-input" placeholder="Dose, frequency, side effects…" />
+            </div>
+          </div>
+
+          <div class="form-btn-row">
+            <button type="button" class="btn-form-cancel" id="btnTreatCancel">Cancel</button>
+            <button type="button" class="btn-form-save"   id="btnTreatSave">Save treatment</button>
+          </div>
+        </form>
+
+        <div id="treatment-list"></div>
+      </section>
+
+      <!-- ══════════════ TAB: INSIGHTS ═════════════════════════ -->
+      <section id="tab-insights" class="tab-panel">
+        <div class="insights-notice">
+          ⚠️ These are statistical patterns in <em>your own data</em>, not
+          clinical findings. Correlation does not prove causation. Discuss any
+          concerns with your dermatologist.
+        </div>
+        <div id="insights-container"></div>
+      </section>
+    </div>
+
+    <div id="toast"></div>
+
+    <!--
+      type="module" does two things:
+      1. Enables import/export syntax in the browser.
+      2. Automatically defers the script — it runs after the full HTML is parsed,
+         so DOM elements are guaranteed to exist when main.js runs.
+    -->
+    <script type="module" src="js/v2/main.js"></script>
+  </body>
+</html>
