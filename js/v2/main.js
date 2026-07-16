@@ -15,6 +15,7 @@ import { renderTrends } from './trends.js';
 import { renderInsights } from './insights.js';
 import { renderTreatments, initTreatmentForm } from './treatments.js';
 import { loadTreatments } from './data.js';
+import { updateSliderFill } from './slider-fill.js';
 
 // ── Callback shared across modules ───────────────────────────────────────────
 // Called whenever any form input changes. Triggers a summary re-render only
@@ -76,9 +77,13 @@ window.addEventListener("resize", syncIndicator);
 ].forEach(function ([sliderId, valueId]) {
   document.getElementById(sliderId).addEventListener("input", function () {
     document.getElementById(valueId).textContent = this.value;
+    updateSliderFill(this);
     onFormChanged();
   });
 });
+
+// Initialize the fill on load (test slider)
+updateSliderFill(document.getElementById("itching"));
 
 document.getElementById("logDate").addEventListener("change", onFormChanged);
 
