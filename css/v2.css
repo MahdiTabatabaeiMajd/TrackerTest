@@ -5,8 +5,8 @@
   position: fixed; inset: 0; z-index: 9999;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  /* On-brand deep gradient — indigo → violet → fuchsia (matches the app) */
-  background: linear-gradient(135deg, #312e81 0%, #5b21b6 50%, #86198f 100%);
+  /* On-brand deep gradient — cyan → teal → emerald (matches the app) */
+  background: linear-gradient(135deg, #164e63 0%, #0f766e 50%, #047857 100%);
   transition: opacity 1s ease;
 }
 #splash-canvas {
@@ -27,24 +27,24 @@
 .splash-title {
   font-size: clamp(2.4rem, 8vw, 4.8rem);
   font-weight: 700; letter-spacing: -0.02em;
-  text-shadow: 0 0 40px rgba(255,255,255,0.35), 0 0 90px rgba(217,70,239,0.45);
+  text-shadow: 0 0 40px rgba(255,255,255,0.35), 0 0 90px rgba(45,212,191,0.45);
 }
 .splash-sub {
   margin-top: 0.55em;
   font-size: clamp(0.75rem, 2.2vw, 1rem);
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(233,213,255,0.85); font-weight: 400;
+  color: rgba(207,250,254,0.85); font-weight: 400;
 }
 .splash-org {
   margin-top: 0.3em;
   font-size: 0.68rem; letter-spacing: 0.16em;
-  color: rgba(216,180,254,0.55); text-transform: uppercase;
+  color: rgba(153,246,228,0.55); text-transform: uppercase;
 }
 .splash-progress {
   position: fixed; bottom: 0; left: 0;
   height: 2px; width: 100%;
   transform-origin: left; transform: scaleX(0);
-  background: linear-gradient(90deg, #818cf8, #e879f9);
+  background: linear-gradient(90deg, #22d3ee, #34d399);
   animation: splashProg 5s linear forwards;
 }
 @keyframes splashProg { to { transform: scaleX(1); } }
@@ -62,7 +62,7 @@
 
 body {
   font-family: "Segoe UI", system-ui, sans-serif;
-  background: linear-gradient(135deg, #eef2ff 0%, #fae8ff 100%);
+  background: linear-gradient(135deg, #ecfeff 0%, #ecfdf5 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -74,7 +74,7 @@ body {
 .app-container {
   background: #fff;
   border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(79,70,229,0.14);
+  box-shadow: 0 8px 40px rgba(8,145,178,0.14);
   padding: 36px 32px;
   width: 100%;
   max-width: 700px;
@@ -85,16 +85,16 @@ body {
 .app-container::before {
   content: "";
   position: absolute; top: 0; left: 0; right: 0; height: 5px;
-  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 45%, #c026d3 100%);
+  background: linear-gradient(90deg, #0891b2 0%, #14b8a6 45%, #10b981 100%);
 }
 
 /* ── Header ─────────────────────────────────────────────── */
 .app-header { text-align: center; margin-bottom: 22px; }
 .app-header h1 {
   font-size: 1.9rem; font-weight: 700; letter-spacing: -0.5px;
-  /* Fancy gradient text — falls back to solid indigo where unsupported */
-  color: #4338ca;
-  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 50%, #c026d3 100%);
+  /* Fancy gradient text — falls back to solid teal where unsupported */
+  color: #0e7490;
+  background: linear-gradient(90deg, #0891b2 0%, #14b8a6 50%, #10b981 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -125,7 +125,7 @@ body {
   transition: color 0.2s;
 }
 .tab-btn:hover  { color: #4a5568; }
-.tab-btn.active { color: #4338ca; }
+.tab-btn.active { color: #0e7490; }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; animation: panelFadeIn 0.3s ease both; }
@@ -141,7 +141,7 @@ body {
 
 /* ── Section headers ────────────────────────────────────── */
 .section-header {
-  font-size: 0.78rem; font-weight: 700; color: #4338ca;
+  font-size: 0.78rem; font-weight: 700; color: #0e7490;
   text-transform: uppercase; letter-spacing: 0.6px;
   margin-bottom: 12px; text-align: center;
 }
@@ -152,12 +152,12 @@ body {
   font-size: 0.92rem; padding: 8px 14px; border-radius: 10px;
   border: 1.5px solid #cbd5e0; background: #f7fafc; color: #2d3748; cursor: pointer;
 }
-#logDate:focus { outline: none; border-color: #4f46e5; }
+#logDate:focus { outline: none; border-color: #0891b2; }
 
 /* ── Symptom cards ──────────────────────────────────────── */
 .symptom-severity {
   padding: 20px; border: 1.5px solid #e2e8f0; border-radius: 18px;
-  background: #f7f8ff; margin-bottom: 16px;
+  background: #f5fdfe; margin-bottom: 16px;
 }
 .symptom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .symptom-card {
@@ -167,8 +167,8 @@ body {
 }
 .slider-row { display: grid; grid-template-columns: 60px 1fr 24px; align-items: center; gap: 8px; }
 .slider-row label { font-weight: 600; font-size: 0.86rem; color: #4a5568; }
-.slider-row input[type="range"] { width: 100%; accent-color: #4f46e5; cursor: pointer; }
-.slider-row span { font-weight: 700; font-size: 0.95rem; color: #4338ca; text-align: right; }
+.slider-row input[type="range"] { width: 100%; accent-color: #0891b2; cursor: pointer; }
+.slider-row span { font-weight: 700; font-size: 0.95rem; color: #0e7490; text-align: right; }
 
 /* ── Colorful severity slider (TEST: Itch only) ─────────────
    Fill grows with the value and shades green → amber → red.
@@ -218,7 +218,7 @@ body {
   padding: 5px 10px; border: 1.5px solid #cbd5e0; border-radius: 8px;
   background: #f7fafc; color: #4a5568; font-size: 0.8rem; cursor: pointer; font-family: inherit;
 }
-.select-trigger.active { border-color: #4f46e5; }
+.select-trigger.active { border-color: #0891b2; }
 .trigger-arrow { font-size: 0.68rem; color: #a0aec0; }
 .select-panel {
   display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
@@ -235,20 +235,20 @@ body {
   display: flex; align-items: center; gap: 8px;
   padding: 4px 12px; font-size: 0.82rem; color: #4a5568; cursor: pointer;
 }
-.select-panel label:hover { background: #eef2ff; }
+.select-panel label:hover { background: #ecfeff; }
 .select-panel input[type="checkbox"] {
-  accent-color: #4f46e5; cursor: pointer; width: 13px; height: 13px; flex-shrink: 0;
+  accent-color: #0891b2; cursor: pointer; width: 13px; height: 13px; flex-shrink: 0;
 }
 
 /* ── Chips ──────────────────────────────────────────────── */
 .part-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .part-chip {
   display: inline-flex; align-items: center; gap: 4px;
-  background: #ede9fe; color: #5b21b6; border-radius: 20px;
+  background: #ccfbf1; color: #115e59; border-radius: 20px;
   padding: 2px 8px 2px 9px; font-size: 0.74rem; font-weight: 500;
 }
 .chip-remove {
-  background: none; border: none; cursor: pointer; color: #5b21b6;
+  background: none; border: none; cursor: pointer; color: #115e59;
   font-size: 0.78rem; padding: 0; line-height: 1; display: flex; align-items: center;
 }
 .chip-remove:hover { color: #dc2626; }
@@ -260,11 +260,11 @@ body {
 }
 .env-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
 .btn-fetch {
-  padding: 6px 14px; border: 1.5px solid #4f46e5; border-radius: 50px;
-  background: transparent; color: #4f46e5; font-size: 0.82rem; font-weight: 600;
+  padding: 6px 14px; border: 1.5px solid #0e7490; border-radius: 50px;
+  background: transparent; color: #0e7490; font-size: 0.82rem; font-weight: 600;
   cursor: pointer; font-family: inherit; transition: background 0.15s;
 }
-.btn-fetch:hover { background: #eef2ff; }
+.btn-fetch:hover { background: #ecfeff; }
 .btn-fetch:disabled { opacity: 0.5; cursor: default; }
 .env-privacy {
   font-size: 0.72rem; color: #94a3b8; margin-bottom: 10px; line-height: 1.5;
@@ -287,7 +287,7 @@ body {
 /* ── Lifestyle section ──────────────────────────────────── */
 .lifestyle-section {
   padding: 18px 20px; border: 1.5px solid #e2e8f0; border-radius: 18px;
-  background: #fdf8ff; margin-bottom: 16px;
+  background: #f6fdf9; margin-bottom: 16px;
 }
 .lifestyle-grid { display: flex; flex-direction: column; gap: 14px; }
 
@@ -296,12 +296,12 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   font-size: 0.85rem; font-weight: 600; color: #4a5568;
 }
-.trigger-value { font-weight: 700; color: #4338ca; }
+.trigger-value { font-weight: 700; color: #0e7490; }
 .trigger-scale {
   display: flex; justify-content: space-between;
   font-size: 0.68rem; color: #a0aec0; padding: 0 2px;
 }
-.trigger-slider { width: 100%; accent-color: #c026d3; cursor: pointer; }
+.trigger-slider { width: 100%; accent-color: #059669; cursor: pointer; }
 
 .trigger-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .trigger-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
@@ -313,7 +313,7 @@ body {
   background: #f7fafc; color: #718096; font-size: 0.74rem; font-weight: 600;
   cursor: pointer; font-family: inherit; transition: background 0.12s;
 }
-.step-btn.active { background: #c026d3; color: #fff; border-color: #c026d3; }
+.step-btn.active { background: #047857; color: #fff; border-color: #047857; }
 
 /* Yes/No toggles */
 .toggle-group { display: flex; gap: 4px; }
@@ -328,11 +328,11 @@ body {
 /* ── Review / Summary ───────────────────────────────────── */
 .review-row { display: flex; justify-content: center; margin-bottom: 18px; }
 #symptomPanel {
-  display: none; background: #f7f8ff; border: 1.5px solid #e2e8f0;
+  display: none; background: #f5fdfe; border: 1.5px solid #e2e8f0;
   border-radius: 16px; padding: 18px 22px; margin-bottom: 14px;
 }
 #symptomPanel h3 {
-  font-size: 0.8rem; font-weight: 700; color: #4338ca;
+  font-size: 0.8rem; font-weight: 700; color: #0e7490;
   text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;
 }
 .summary-row {
@@ -376,13 +376,13 @@ body {
 .btn:hover  { opacity: 0.85; transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 .btnclear  { background: #e2e8f0; color: #4a5568; }
-.btnsave   { background: linear-gradient(135deg, #4f46e5 0%, #c026d3 100%); color: #fff; box-shadow: 0 3px 12px rgba(124,58,237,0.4); }
-.btnreview { background: transparent; color: #4f46e5; border: 2px solid #4f46e5; }
+.btnsave   { background: linear-gradient(135deg, #0e7490 0%, #047857 100%); color: #fff; box-shadow: 0 3px 12px rgba(8,145,178,0.35); }
+.btnreview { background: transparent; color: #0e7490; border: 2px solid #0e7490; }
 
 /* ── Toast ──────────────────────────────────────────────── */
 #toast {
   display: none; position: fixed; bottom: 28px; left: 50%;
-  transform: translateX(-50%); background: #4f46e5; color: #fff;
+  transform: translateX(-50%); background: #0e7490; color: #fff;
   padding: 10px 22px; border-radius: 50px; font-size: 0.88rem; font-weight: 600;
   box-shadow: 0 4px 16px rgba(0,0,0,0.15); z-index: 999;
 }
@@ -428,20 +428,20 @@ body {
   text-transform: uppercase; letter-spacing: 0.5px;
 }
 .tc-group-hint { font-size: 0.7rem; color: #a0aec0; font-style: italic; flex: 1; }
-.tc-group--treatments .tc-group-title { color: #c026d3; }
+.tc-group--treatments .tc-group-title { color: #047857; }
 .tc-mini {
   font-size: 0.66rem; font-weight: 600; padding: 2px 8px; border-radius: 20px;
   border: 1px solid #cbd5e0; background: #fff; color: #64748b;
   cursor: pointer; font-family: inherit; margin-left: auto;
 }
 .tc-mini + .tc-mini { margin-left: 4px; }
-.tc-mini:hover { border-color: #4f46e5; color: #4f46e5; }
+.tc-mini:hover { border-color: #0e7490; color: #0e7490; }
 .tc-options { display: flex; flex-wrap: wrap; gap: 6px 14px; }
 .tc-option {
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 0.82rem; color: #4a5568; cursor: pointer;
 }
-.tc-option input[type="checkbox"] { accent-color: #4f46e5; cursor: pointer; width: 14px; height: 14px; }
+.tc-option input[type="checkbox"] { accent-color: #0891b2; cursor: pointer; width: 14px; height: 14px; }
 .tc-dot { vertical-align: middle; }
 
 .trends-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -546,7 +546,7 @@ body {
   cursor: pointer; font-family: inherit; border: 2px dashed #cbd5e0;
   background: transparent; color: #718096; transition: border-color 0.12s, color 0.12s;
 }
-.btn-add-treatment:hover { border-color: #4f46e5; color: #4f46e5; }
+.btn-add-treatment:hover { border-color: #0e7490; color: #0e7490; }
 
 .treatment-section-head {
   font-size: 0.72rem; font-weight: 700; color: #a0aec0;
@@ -559,8 +559,8 @@ body {
 }
 /* Background still hints at type; the left border colour is the treatment's
    identity colour (set inline in treatments.js) so it matches its Trends band. */
-.treatment-card--topical  { background: #eef2ff; }
-.treatment-card--biologic { background: #fdf4ff; }
+.treatment-card--topical  { background: #ecfeff; }
+.treatment-card--biologic { background: #ecfdf5; }
 
 .treatment-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
 .treatment-swatch { display: inline-flex; align-items: center; flex-shrink: 0; }
@@ -569,8 +569,8 @@ body {
   font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
   text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap;
 }
-.treatment-badge--topical  { background: #e0e7ff; color: #4338ca; }
-.treatment-badge--biologic { background: #f5d0fe; color: #a21caf; }
+.treatment-badge--topical  { background: #cffafe; color: #0e7490; }
+.treatment-badge--biologic { background: #d1fae5; color: #047857; }
 .treatment-name  { font-weight: 600; font-size: 0.9rem; color: #2d3748; flex: 1; }
 .treatment-meta  { font-size: 0.78rem; color: #718096; margin-bottom: 3px; }
 .treatment-areas { font-size: 0.76rem; color: #4a5568; margin-bottom: 3px; }
@@ -585,7 +585,7 @@ body {
 
 /* ── Treatment add form ─────────────────────────────────── */
 #treatment-form {
-  display: none; background: #f7f8ff; border: 1.5px solid #e2e8f0;
+  display: none; background: #f5fdfe; border: 1.5px solid #e2e8f0;
   border-radius: 16px; padding: 18px 20px; margin-bottom: 16px;
 }
 .form-row { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -598,7 +598,7 @@ body {
   padding: 7px 10px; border: 1.5px solid #cbd5e0; border-radius: 9px;
   background: #fff; color: #2d3748; font-size: 0.84rem; font-family: inherit;
 }
-.form-input:focus, .form-select:focus { outline: none; border-color: #4f46e5; }
+.form-input:focus, .form-select:focus { outline: none; border-color: #0891b2; }
 .form-note { font-size: 0.72rem; color: #94a3b8; margin-top: 2px; }
 .type-radio-row { display: flex; gap: 16px; margin-bottom: 14px; }
 .type-radio-row label {
@@ -613,9 +613,9 @@ body {
   font-size: 0.76rem; color: #4a5568; cursor: pointer;
   background: #f1f5f9; border-radius: 20px; padding: 3px 9px;
 }
-.treat-area-label:has(input:checked) { background: #e0e7ff; color: #4338ca; }
+.treat-area-label:has(input:checked) { background: #cffafe; color: #0e7490; }
 .form-btn-row { display: flex; gap: 10px; margin-top: 14px; }
-.btn-form-save   { flex: 1; background: #4f46e5; color: #fff; border: none; border-radius: 50px; padding: 9px 0; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-form-save   { flex: 1; background: #0e7490; color: #fff; border: none; border-radius: 50px; padding: 9px 0; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; }
 .btn-form-cancel { background: #e2e8f0; color: #4a5568; border: none; border-radius: 50px; padding: 9px 20px; font-size: 0.88rem; font-weight: 600; cursor: pointer; font-family: inherit; }
 
 /* ── Insights v2: takeaway cards + flare/calm comparison ──── */

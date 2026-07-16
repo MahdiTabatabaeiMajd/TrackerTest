@@ -99,11 +99,11 @@ export function initSplash() {
     // ── The trend line itself (glowing) ───────────────────────────────────
     if (pts.length > 1) {
       const lineGrad = ctx.createLinearGradient(g.padX, 0, g.padX + g.chartW, 0);
-      lineGrad.addColorStop(0,   '#a5b4fc');   // indigo-300
-      lineGrad.addColorStop(0.5, '#c4b5fd');   // violet-300
-      lineGrad.addColorStop(1,   '#f0abfc');   // fuchsia-300
+      lineGrad.addColorStop(0,   '#67e8f9');   // cyan-300
+      lineGrad.addColorStop(0.5, '#5eead4');   // teal-300
+      lineGrad.addColorStop(1,   '#6ee7b7');   // emerald-300
       ctx.save();
-      ctx.shadowColor = 'rgba(217,70,239,0.55)';
+      ctx.shadowColor = 'rgba(45,212,191,0.55)';
       ctx.shadowBlur  = 16;
       ctx.strokeStyle = lineGrad;
       ctx.lineWidth   = 3.5;
@@ -119,7 +119,7 @@ export function initSplash() {
       const x = xOf(i, g), y = yOf(series[i], g);
       ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fillStyle = '#fff'; ctx.fill();
-      ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(217,70,239,0.8)'; ctx.stroke();
+      ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(45,212,191,0.8)'; ctx.stroke();
     }
 
     // ── Pulsing marker at the pen tip ─────────────────────────────────────
