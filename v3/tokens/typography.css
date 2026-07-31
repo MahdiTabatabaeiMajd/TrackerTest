@@ -1,0 +1,19 @@
+/* FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences */
+:root{
+/* FlareWatch uses the system UI stack — no webfont binaries ship with the app */
+--font-ui:"Segoe UI",system-ui,sans-serif;
+/* Scale (rem) — copied verbatim from css/v2.css */
+--fs-h1:1.9rem;--fs-body:0.92rem;--fs-card-title:0.9rem;--fs-label:0.86rem;--fs-control:0.84rem;--fs-small:0.82rem;--fs-tab:0.8rem;--fs-badge:0.78rem;--fs-chip:0.74rem;--fs-note:0.72rem;--fs-micro:0.68rem;--fs-nano:0.66rem;
+/* Weights */
+--fw-regular:400; /* @kind font */
+--fw-medium:500; /* @kind font */
+--fw-semibold:600; /* @kind font */
+--fw-bold:700; /* @kind font */
+/* Section-header treatment: uppercase, letterspaced, indigo */
+--ls-section:0.6px; /* @kind font */
+--ls-label:0.5px; /* @kind font */
+--ls-badge:0.4px; /* @kind font */
+--lh-body:1.5; /* @kind font */
+--lh-relaxed:1.6; /* @kind font */
+--lh-loose:1.7; /* @kind font */
+}
