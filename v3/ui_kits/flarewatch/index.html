@@ -1,46 +1,249 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="author" content="Mahdi Tabatabaei"><!-- FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences --><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FlareWatch — UI kit</title>
-<link rel="stylesheet" href="../../styles.css">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script src="../../_ds_bundle.js"></script>
-<script src="data.js"></script>
-<style>html{scrollbar-gutter:stable}body{margin:0;font-family:var(--font-ui);background:var(--grad-page);min-height:100vh;padding:var(--page-pad);color:var(--text-strong)}#root{width:100%;max-width:700px;margin:0 auto}@keyframes panelFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes splashFadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}@keyframes splashProg{to{transform:scaleX(1)}}</style>
-</head><body><div id="root"></div>
-<script type="text/babel" src="SplashScreen.jsx"></script>
-<script type="text/babel" src="LogTab.jsx"></script>
-<script type="text/babel" src="HistoryTab.jsx"></script>
-<script type="text/babel" src="TreatmentsTab.jsx"></script>
-<script type="text/babel" src="TrendsTab.jsx"></script>
-<script type="text/babel" src="InsightsTab.jsx"></script>
-<script type="text/babel">
-const {TabNav,Toast,Button}=window.FlareWatchDesignSystem_d30d0f;
-function App(){
-  const [tab,setTab]=React.useState("Log");
-  const [toast,setToast]=React.useState(null);
-  const [splash,setSplash]=React.useState(true);
-  const [dataV,setDataV]=React.useState(0);
-  const saved=()=>{setToast("Entry saved ✓");setTimeout(()=>setToast(null),2200)};
-  const loadDemo=()=>{const d=window.FW.generateDemo();window.FW.entries=d.entries;window.FW.treatments=d.treatments;setDataV(v=>v+1);setToast("30-day demo loaded — 3 treatments added");setTimeout(()=>setToast(null),2600)};
-  const Panel={Log:<window.LogTab onSaved={saved}/>,History:<window.HistoryTab/>,Treatments:<window.TreatmentsTab/>,Trends:<window.TrendsTab/>,Insights:<window.InsightsTab/>}[tab];
-  return <React.Fragment><div style={{background:"#fff",borderRadius:"var(--radius-container)",boxShadow:"var(--shadow-container)",padding:"var(--app-pad-y) var(--app-pad-x)",width:"100%",maxWidth:700,boxSizing:"border-box",position:"relative",overflow:"clip"}}>
-    <div style={{position:"absolute",top:0,left:0,right:0,height:5,background:"var(--grad-brand)"}}></div>
-    <button onClick={loadDemo} style={{position:"absolute",top:16,right:20,background:"transparent",border:"1px dashed var(--border-input)",color:"var(--text-muted)",padding:"6px 12px",borderRadius:10,fontSize:"0.74rem",fontWeight:600,cursor:"pointer",fontFamily:"inherit",transition:"all .15s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--brand-teal)";e.currentTarget.style.color="var(--brand-teal-deep)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border-input)";e.currentTarget.style.color="var(--text-muted)"}}>Load 30-day demo</button>
-    <div style={{display:"flex",alignItems:"center",justifyContent:"center",flexWrap:"wrap",gap:14,marginBottom:18,paddingTop:"var(--header-clear)"}}>
-      <img src="../../assets/INIA_logo.png" alt="INIA Biosciences" style={{height:42,width:"auto"}}/>
-      <div style={{width:1,height:42,background:"var(--border-default)"}}></div>
-      <div style={{textAlign:"left"}}>
-        <h1 style={{fontSize:"var(--app-title-size)",fontWeight:700,letterSpacing:"-0.4px",margin:0,background:"var(--grad-brand)",WebkitBackgroundClip:"text",backgroundClip:"text",WebkitTextFillColor:"transparent"}}>FlareWatch</h1>
-        <p style={{fontSize:"0.78rem",color:"var(--text-muted)",margin:"2px 0 0"}}>Evidence-based psoriasis tracker</p>
-      </div>
-    </div>
-    <div style={{marginBottom:24}}><TabNav tabs={["Log","History","Treatments","Trends","Insights"]} active={tab} onChange={setTab}/></div>
-    <section key={tab+"-"+dataV} data-screen-label={tab} style={{animation:"panelFadeIn 0.3s ease both",minHeight:"var(--panel-min-h)"}}>{Panel}</section>
-    <Toast visible={!!toast}>{toast}</Toast>
-    <footer style={{marginTop:28,paddingTop:14,borderTop:"1px solid var(--border-hair)",textAlign:"center",fontSize:"0.72rem",color:"var(--text-faint)"}}>© 2026 INIA Biosciences · Built by Mahdi Tabatabaei</footer>
-  </div>
-  {splash&&<window.SplashScreen onDone={()=>setSplash(false)}/>}
-  </React.Fragment>;
-}
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Mahdi Tabatabaei" />
+    <!-- FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlareWatch</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+    <meta name="theme-color" content="#0f3443" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <script
+      src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+      integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+      integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+      integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../_ds_bundle.js"></script>
+    <script src="data.js"></script>
+    <style>
+      html {
+        scrollbar-gutter: stable;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-ui);
+        background: var(--grad-page);
+        min-height: 100vh;
+        padding: var(--page-pad);
+        color: var(--text-strong);
+      }
+      #root {
+        width: 100%;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      @keyframes panelFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes splashFadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes splashProg {
+        to {
+          transform: scaleX(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" src="SplashScreen.jsx"></script>
+    <script type="text/babel" src="LogTab.jsx"></script>
+    <script type="text/babel" src="HistoryTab.jsx"></script>
+    <script type="text/babel" src="TreatmentsTab.jsx"></script>
+    <script type="text/babel" src="TrendsTab.jsx"></script>
+    <script type="text/babel" src="InsightsTab.jsx"></script>
+    <script type="text/babel">
+      const { TabNav, Toast, Button } = window.FlareWatchDesignSystem_d30d0f;
+      function App() {
+        const [tab, setTab] = React.useState("Log");
+        const [toast, setToast] = React.useState(null);
+        const [splash, setSplash] = React.useState(true);
+        const [dataV, setDataV] = React.useState(0);
+        const saved = () => {
+          setToast("Entry saved ✓");
+          setTimeout(() => setToast(null), 2200);
+        };
+        const loadDemo = () => {
+          const d = window.FW.generateDemo();
+          window.FW.entries = d.entries;
+          window.FW.treatments = d.treatments;
+          setDataV((v) => v + 1);
+          setToast("30-day demo loaded — 3 treatments added");
+          setTimeout(() => setToast(null), 2600);
+        };
+        const Panel = {
+          Log: <window.LogTab onSaved={saved} />,
+          History: <window.HistoryTab />,
+          Treatments: <window.TreatmentsTab />,
+          Trends: <window.TrendsTab />,
+          Insights: <window.InsightsTab />,
+        }[tab];
+        return (
+          <React.Fragment>
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: "var(--radius-container)",
+                boxShadow: "var(--shadow-container)",
+                padding: "var(--app-pad-y) var(--app-pad-x)",
+                width: "100%",
+                maxWidth: 700,
+                boxSizing: "border-box",
+                position: "relative",
+                overflow: "clip",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 5,
+                  background: "var(--grad-brand)",
+                }}
+              ></div>
+              <button
+                onClick={loadDemo}
+                style={{
+                  position: "absolute",
+                  top: 16,
+                  right: 20,
+                  background: "transparent",
+                  border: "1px dashed var(--border-input)",
+                  color: "var(--text-muted)",
+                  padding: "6px 12px",
+                  borderRadius: 10,
+                  fontSize: "0.74rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  transition: "all .15s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--brand-teal)";
+                  e.currentTarget.style.color = "var(--brand-teal-deep)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-input)";
+                  e.currentTarget.style.color = "var(--text-muted)";
+                }}
+              >
+                Load 30-day demo
+              </button>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  gap: 14,
+                  marginBottom: 18,
+                  paddingTop: "var(--header-clear)",
+                }}
+              >
+                <img
+                  src="../../assets/INIA_logo.png"
+                  alt="INIA Biosciences"
+                  style={{ height: 42, width: "auto" }}
+                />
+                <div
+                  style={{
+                    width: 1,
+                    height: 42,
+                    background: "var(--border-default)",
+                  }}
+                ></div>
+                <div style={{ textAlign: "left" }}>
+                  <h1
+                    style={{
+                      fontSize: "var(--app-title-size)",
+                      fontWeight: 700,
+                      letterSpacing: "-0.4px",
+                      margin: 0,
+                      background: "var(--grad-brand)",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    FlareWatch
+                  </h1>
+                  <p
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "var(--text-muted)",
+                      margin: "2px 0 0",
+                    }}
+                  >
+                    Evidence-based psoriasis tracker
+                  </p>
+                </div>
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <TabNav
+                  tabs={["Log", "History", "Treatments", "Trends", "Insights"]}
+                  active={tab}
+                  onChange={setTab}
+                />
+              </div>
+              <section
+                key={tab + "-" + dataV}
+                data-screen-label={tab}
+                style={{
+                  animation: "panelFadeIn 0.3s ease both",
+                  minHeight: "var(--panel-min-h)",
+                }}
+              >
+                {Panel}
+              </section>
+              <Toast visible={!!toast}>{toast}</Toast>
+              <footer
+                style={{
+                  marginTop: 28,
+                  paddingTop: 14,
+                  borderTop: "1px solid var(--border-hair)",
+                  textAlign: "center",
+                  fontSize: "0.72rem",
+                  color: "var(--text-faint)",
+                }}
+              >
+                © 2026 INIA Biosciences · Built by Mahdi Tabatabaei
+              </footer>
+            </div>
+            {splash && <window.SplashScreen onDone={() => setSplash(false)} />}
+          </React.Fragment>
+        );
+      }
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
