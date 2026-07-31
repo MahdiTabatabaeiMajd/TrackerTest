@@ -6,5 +6,8 @@
 .idea/
 *.swp
 
+# Obsidian (personal vault/editor state — the Markdown in docs/ is what's tracked)
+.obsidian/
+
 # Logs
 *.log
