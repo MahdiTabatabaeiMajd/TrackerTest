@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"FlareWatchDesignSystem_d30d0f","components":[{"name":"TrendChart","sourcePath":"components/charts/TrendChart.jsx"},{"name":"CHART_COLORS","sourcePath":"components/charts/TrendChart.jsx"},{"name":"TREATMENT_COLORS","sourcePath":"components/charts/TrendChart.jsx"},{"name":"Badge","sourcePath":"components/core/Badge.jsx"},{"name":"SeverityKind","sourcePath":"components/core/Badge.jsx"},{"name":"SeverityLabel","sourcePath":"components/core/Badge.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"Chip","sourcePath":"components/core/Chip.jsx"},{"name":"SectionHeader","sourcePath":"components/core/SectionHeader.jsx"},{"name":"TabNav","sourcePath":"components/core/TabNav.jsx"},{"name":"Toast","sourcePath":"components/core/Toast.jsx"},{"name":"Field","sourcePath":"components/forms/Field.jsx"},{"name":"TextInput","sourcePath":"components/forms/Field.jsx"},{"name":"Select","sourcePath":"components/forms/Field.jsx"},{"name":"SliderRow","sourcePath":"components/forms/SliderRow.jsx"},{"name":"StepGroup","sourcePath":"components/forms/StepGroup.jsx"},{"name":"ToggleGroup","sourcePath":"components/forms/ToggleGroup.jsx"},{"name":"TriggerSlider","sourcePath":"components/forms/TriggerSlider.jsx"}],"sourceHashes":{"components/charts/TrendChart.jsx":"c44af139264c","components/core/Badge.jsx":"5e2049ef4dee","components/core/Button.jsx":"1a2a7b87b296","components/core/Chip.jsx":"12894d3f9d50","components/core/SectionHeader.jsx":"fb9bfe8f544e","components/core/TabNav.jsx":"981fc634d423","components/core/Toast.jsx":"756164f1ce5a","components/forms/Field.jsx":"4ec48dc7a329","components/forms/SliderRow.jsx":"c307107e7c1e","components/forms/StepGroup.jsx":"08a5e505e552","components/forms/ToggleGroup.jsx":"4ca29f0c4e65","components/forms/TriggerSlider.jsx":"1173f80a4729","ui_kits/flarewatch/HistoryTab.jsx":"da85e2b4b70b","ui_kits/flarewatch/InsightsTab.jsx":"054ecf26bf5a","ui_kits/flarewatch/LogTab.jsx":"9f952e060d05","ui_kits/flarewatch/SplashScreen.jsx":"3763de13171c","ui_kits/flarewatch/TreatmentsTab.jsx":"34cb42e45641","ui_kits/flarewatch/TrendsTab.jsx":"d37ee67d8022","ui_kits/flarewatch/data.js":"5c5b3ce5cbf5"},"inlinedExternals":[],"unexposedExports":[]} */
+/* @ds-bundle: {"format":4,"namespace":"FlareWatchDesignSystem_d30d0f","components":[{"name":"TrendChart","sourcePath":"components/charts/TrendChart.jsx"},{"name":"CHART_COLORS","sourcePath":"components/charts/TrendChart.jsx"},{"name":"TREATMENT_COLORS","sourcePath":"components/charts/TrendChart.jsx"},{"name":"Badge","sourcePath":"components/core/Badge.jsx"},{"name":"SeverityKind","sourcePath":"components/core/Badge.jsx"},{"name":"SeverityLabel","sourcePath":"components/core/Badge.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"Chip","sourcePath":"components/core/Chip.jsx"},{"name":"SectionHeader","sourcePath":"components/core/SectionHeader.jsx"},{"name":"TabNav","sourcePath":"components/core/TabNav.jsx"},{"name":"Toast","sourcePath":"components/core/Toast.jsx"},{"name":"Field","sourcePath":"components/forms/Field.jsx"},{"name":"TextInput","sourcePath":"components/forms/Field.jsx"},{"name":"Select","sourcePath":"components/forms/Field.jsx"},{"name":"SliderRow","sourcePath":"components/forms/SliderRow.jsx"},{"name":"StepGroup","sourcePath":"components/forms/StepGroup.jsx"},{"name":"ToggleGroup","sourcePath":"components/forms/ToggleGroup.jsx"},{"name":"TriggerSlider","sourcePath":"components/forms/TriggerSlider.jsx"}],"sourceHashes":{"components/charts/TrendChart.jsx":"c44af139264c","components/core/Badge.jsx":"5e2049ef4dee","components/core/Button.jsx":"1a2a7b87b296","components/core/Chip.jsx":"12894d3f9d50","components/core/SectionHeader.jsx":"fb9bfe8f544e","components/core/TabNav.jsx":"a3e9bbf3a0b3","components/core/Toast.jsx":"756164f1ce5a","components/forms/Field.jsx":"4ec48dc7a329","components/forms/SliderRow.jsx":"c307107e7c1e","components/forms/StepGroup.jsx":"08a5e505e552","components/forms/ToggleGroup.jsx":"4ca29f0c4e65","components/forms/TriggerSlider.jsx":"1173f80a4729","ui_kits/flarewatch/HistoryTab.jsx":"da85e2b4b70b","ui_kits/flarewatch/InsightsTab.jsx":"e5dfb9ca6e84","ui_kits/flarewatch/LogTab.jsx":"e946b9619acf","ui_kits/flarewatch/SplashScreen.jsx":"3763de13171c","ui_kits/flarewatch/TreatmentsTab.jsx":"34cb42e45641","ui_kits/flarewatch/TrendsTab.jsx":"f57a7bc460e6","ui_kits/flarewatch/data.js":"5c5b3ce5cbf5"},"inlinedExternals":[],"unexposedExports":[]} */
 
 (() => {
 
@@ -571,7 +571,9 @@ function TabNav({
       background: "var(--surface-rail)",
       borderRadius: 14,
       padding: 5,
-      position: "relative"
+      position: "relative",
+      overflowX: "auto",
+      scrollbarWidth: "none"
     }
   }, ind && /*#__PURE__*/React.createElement("span", {
     style: {
@@ -595,13 +597,14 @@ function TabNav({
       position: "relative",
       zIndex: 1,
       flex: 1,
-      padding: "11px 2px",
+      padding: "var(--tab-pad)",
       border: "none",
       borderRadius: 10,
       background: "transparent",
       color: t === active ? "var(--brand-blue-deep)" : "var(--text-muted)",
-      fontSize: "0.8rem",
+      fontSize: "var(--tab-font)",
       fontWeight: 600,
+      whiteSpace: "nowrap",
       cursor: "pointer",
       fontFamily: "inherit",
       transition: "color .2s"

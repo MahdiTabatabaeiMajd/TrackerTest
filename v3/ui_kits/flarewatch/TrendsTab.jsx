@@ -48,7 +48,7 @@ function TrendsTab(){
       {bands.length>0&&group("Treatments",bands.map(b=>({k:b.id,label:b.fullName,color:b.color})),treats,setTreats,"shown on symptom charts only",true)}
     </div>
     {visible.length===0?<p style={{textAlign:"center",color:"var(--text-ghost)",fontSize:"0.88rem",padding:"36px 0"}}>Select at least one metric above to see charts.</p>:
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+    <div style={{display:"grid",gridTemplateColumns:"var(--grid-2col)",gap:14}}>
       {visible.map(d=><TrendChart key={d.key} title={d.title} scores={d.scores} labels={dates} maxVal={d.max} color={d.color} bands={d.cat==="symptom"?activeBands:[]}/>)}
     </div>}
     <p style={{fontSize:"0.74rem",color:"var(--text-ghost)",textAlign:"center",marginTop:14}}>Last {entries.length} logged entries · gaps = no data that day</p>

@@ -49,12 +49,12 @@ function LogTab({onSaved}){
     </div>
     <div style={panel("var(--surface-tint-primary)")}>
       <SectionHeader>Symptom Severity<FieldMark req/></SectionHeader>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"var(--grid-2col)",gap:12}}>
         {names.map((n,i)=><SymptomCard key={n} name={n} value={scores[i]} onChange={v=>setScores(scores.map((s,j)=>j===i?v:s))} parts={parts[i]} setParts={p=>setPartsAll(parts.map((x,j)=>j===i?p:x))}/>)}
       </div>
     </div>
     <div style={panel("var(--surface-tint-sky)")}>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8,marginBottom:6}}>
         <SectionHeader style={{margin:0}}>Environment<FieldMark/></SectionHeader>
         <Button variant="fetch" disabled={fetching} onClick={fetchEnv}>{fetching?"Fetching…":"📍 Fetch weather & air quality"}</Button>
       </div>
@@ -71,7 +71,7 @@ function LogTab({onSaved}){
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
         <TriggerSlider label="Stress level" value={stress} display={stress+" / 10"} onChange={setStress}/>
         <TriggerSlider label="Sleep last night" value={sleep} display={sleep+" h"} min={2} max={12} step={0.5} scale={["2 h","7 h","12 h"]} onChange={setSleep}/>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"var(--grid-2col)",gap:12}}>
           <div><div style={{fontSize:"0.85rem",fontWeight:600,color:"var(--text-body)",marginBottom:6}}>Alcohol</div><StepGroup options={FW.ALCOHOL_LABELS} value={alcohol} onChange={setAlcohol} tips={FW.ALCOHOL_TIPS} ramp="risk"/></div>
           <div><div style={{fontSize:"0.85rem",fontWeight:600,color:"var(--text-body)",marginBottom:6}}>Smoking</div><StepGroup options={FW.SMOKING_LABELS} value={smoking} onChange={setSmoking} tips={FW.SMOKING_TIPS} ramp="risk"/></div>
           <div><div style={{fontSize:"0.85rem",fontWeight:600,color:"var(--text-body)",marginBottom:6}}>Exercise</div><StepGroup options={FW.EXERCISE_LABELS} value={exercise} onChange={setExercise} ramp="good"/></div>

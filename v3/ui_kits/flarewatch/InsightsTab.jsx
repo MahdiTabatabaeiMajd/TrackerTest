@@ -40,7 +40,7 @@ function InsightsTab(){
     </div>
     <div style={{marginBottom:26}}>
       {secTitle("What your data suggests","Your strongest day-to-day patterns, in plain language.")}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+      <div style={{display:"grid",gridTemplateColumns:"var(--grid-2col)",gap:12}}>
         {chosen.map((f,i)=>{const pos=f.r>0;const strong=Math.abs(f.r)>=0.5;
           return <div key={i} style={{border:"1.5px solid var(--border-default)",borderRadius:14,padding:"14px 16px",background:"#fff"}}>
             <p style={{fontSize:"0.86rem",color:"var(--text-strong)",lineHeight:1.5,margin:"0 0 10px"}}>
