@@ -5,7 +5,6 @@ import { getSeverityLabel, isFlareDay } from './scoring.js';
 import { getSelectedParts, resetSymptoms } from './symptoms.js';
 import { getCurrentEnv, clearEnv } from './environment.js';
 import { currentLifestyle, resetLifestyle, ALCOHOL_LABELS, EXERCISE_LABELS } from './lifestyle.js';
-import { updateSliderFill } from './slider-fill.js';
 
 let reviewMode = false;
 export function getReviewMode() { return reviewMode; }
@@ -121,10 +120,8 @@ export function initClear() {
 
     // Reset symptom sliders
     ["itching", "pain", "redness", "scaling"].forEach(function (key) {
-      const el = document.getElementById(key);
-      el.value = 0;
+      document.getElementById(key).value = 0;
       document.getElementById(key + "Value").textContent = "0";
-      updateSliderFill(el); // reset colorful fill + thumb color (test: Itch)
     });
 
     resetSymptoms();

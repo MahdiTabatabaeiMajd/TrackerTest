@@ -170,47 +170,6 @@ body {
 .slider-row input[type="range"] { width: 100%; accent-color: #4f46e5; cursor: pointer; }
 .slider-row span { font-weight: 700; font-size: 0.95rem; color: #4338ca; text-align: right; }
 
-/* ── Colorful severity slider (TEST: Itch only) ─────────────
-   Fill grows with the value and shades green → amber → red.
-   The --fill % is set from JS on input. To roll out to all four
-   sliders, swap the "#itching" selectors below for
-   ".slider-row input[type='range']". */
-#itching {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 7px;
-  border-radius: 999px;
-  cursor: pointer;
-  outline: none;
-  /* top layer = grey mask over the unfilled part; bottom = full green→red gradient */
-  background:
-    linear-gradient(#e2e8f0, #e2e8f0) right / calc(100% - var(--fill, 0%)) 100% no-repeat,
-    linear-gradient(90deg, #22c55e 0%, #eab308 55%, #ef4444 100%);
-}
-#itching::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--thumb-color, #22c55e); /* set from JS: matches fill edge */
-  border: 2px solid #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-  transition: transform 0.1s ease;
-}
-#itching:active::-webkit-slider-thumb { transform: scale(1.15); }
-#itching::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--thumb-color, #22c55e); /* set from JS: matches fill edge */
-  border: 2px solid #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-#itching::-moz-range-track { background: transparent; height: 7px; }
-#itching::-moz-range-progress { background: transparent; }
-
 /* ── Custom checkbox dropdown ───────────────────────────── */
 .custom-select { position: relative; }
 .select-trigger {
