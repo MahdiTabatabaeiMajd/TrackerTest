@@ -35,17 +35,45 @@ function LogTab({onSaved}){
   const [infection,setInfection]=React.useState(0);
   const [koebner,setKoebner]=React.useState(0);
   const [env,setEnv]=React.useState(null);
+  const [envError,setEnvError]=React.useState(null);
   const [fetching,setFetching]=React.useState(false);
   const [reviewed,setReviewed]=React.useState(false);
   const today=new Date().toISOString().slice(0,10);
   const [date,setDate]=React.useState(today);
   const flare=Math.max(...scores)>=7;
-  const fetchEnv=()=>{setFetching(true);setTimeout(()=>{setEnv({weatherDesc:"Partly cloudy",temperature:24,humidity:58,pm25:12.4,pm10:28,no2:18,season:"Summer"});setFetching(false)},900)};
+  // Real geolocation + Open-Meteo fetch — port of js/v2/environment.js.
+  // Coordinates are rounded to 1 decimal (~11 km) and never stored.
+  const fetchEnv=()=>{
+    if(!navigator.geolocation){setEnvError("Geolocation not supported by this browser.");return}
+    setFetching(true);setEnvError(null);
+    navigator.geolocation.getCurrentPosition(async pos=>{
+      const lat=Math.round(pos.coords.latitude*10)/10,lon=Math.round(pos.coords.longitude*10)/10;
+      try{
+        const [wRes,aqRes]=await Promise.all([
+          fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&current=temperature_2m,relative_humidity_2m,weather_code,precipitation"),
+          fetch("https://air-quality-api.open-meteo.com/v1/air-quality?latitude="+lat+"&longitude="+lon+"&current=pm2_5,pm10,nitrogen_dioxide")]);
+        const w=await wRes.json(),aqd=await aqRes.json();
+        setEnv({temperature:w.current.temperature_2m,humidity:w.current.relative_humidity_2m,weatherCode:w.current.weather_code,weatherDesc:FW.WMO[w.current.weather_code]||"Unknown",precipitation:w.current.precipitation,
+          pm25:Math.round(aqd.current.pm2_5*10)/10,pm10:Math.round(aqd.current.pm10*10)/10,no2:Math.round(aqd.current.nitrogen_dioxide*10)/10,season:FW.getSeason(new Date(date))});
+      }catch(_e){setEnvError("Fetch failed — check your connection.")}
+      setFetching(false);
+    },_e=>{setEnvError("Location access denied.");setFetching(false)},{timeout:10000});
+  };
   const aq=(v,g,m)=>v<=g?"good":v<=m?"moderate":"poor";
-  const save=()=>{onSaved();setReviewed(false)};
+  // Save — builds the same entry shape as js/v2/log.js and writes through to localStorage
+  const save=()=>{
+    FW.addEntry({date,
+      symptoms:names.map((n,i)=>({name:n,score:scores[i],parts:[...parts[i]]})),
+      isFlareDay:scores.some(s=>s>=7),
+      lifestyle:{stress,sleepHours:sleep,alcohol,exercise,smoking,infection,koebner},
+      environment:env?{...env}:null});
+    onSaved();setReviewed(false);
+  };
+  // Clear — full form reset (v2 semantics)
+  const clearAll=()=>{setScores([0,0,0,0]);setPartsAll([[],[],[],[]]);setStress(0);setSleep(7);setAlcohol(0);setExercise(0);setSmoking(0);setInfection(0);setKoebner(0);setEnv(null);setEnvError(null);setDate(today);setReviewed(false)};
   return <div>
     <div style={{display:"flex",justifyContent:"center",marginBottom:16}}>
-      <input type="date" value={date} onChange={e=>setDate(e.target.value)} style={{fontSize:"0.92rem",padding:"8px 14px",borderRadius:10,border:"1.5px solid var(--border-input)",background:"var(--surface-input)",color:"var(--text-strong)",cursor:"pointer",fontFamily:"inherit"}}/>
+      <input type="date" value={date} max={today} onChange={e=>setDate(e.target.value)} style={{fontSize:"0.92rem",padding:"8px 14px",borderRadius:10,border:"1.5px solid var(--border-input)",background:"var(--surface-input)",color:"var(--text-strong)",cursor:"pointer",fontFamily:"inherit"}}/>
     </div>
     <div style={panel("var(--surface-tint-primary)")}>
       <SectionHeader>Symptom Severity<FieldMark req/></SectionHeader>
@@ -63,7 +91,7 @@ function LogTab({onSaved}){
         {env?<React.Fragment>
           <Chip variant="env">{env.weatherDesc}</Chip><Chip variant="env">🌡️ {env.temperature}°C</Chip><Chip variant="env">💧 {env.humidity}% RH</Chip>
           <Chip variant="env" tone={aq(env.pm25,15,35)}>PM2.5 {env.pm25}</Chip><Chip variant="env" tone={aq(env.pm10,45,75)}>PM10 {env.pm10}</Chip><Chip variant="env" tone={aq(env.no2,25,50)}>NO₂ {env.no2}</Chip><Chip variant="env">{env.season}</Chip>
-        </React.Fragment>:<span style={{fontSize:"0.82rem",color:"var(--text-faint)",fontStyle:"italic"}}>Click Fetch to load today's conditions</span>}
+        </React.Fragment>:envError?<span style={{fontSize:"0.82rem",color:"var(--danger-soft)",fontWeight:600}}>{envError}</span>:<span style={{fontSize:"0.82rem",color:"var(--text-faint)",fontStyle:"italic"}}>Click Fetch to load today's conditions</span>}
       </div>
     </div>
     <div style={panel("var(--surface-tint-teal)")}>
@@ -99,7 +127,7 @@ function LogTab({onSaved}){
     </React.Fragment>}
     <div style={{position:"sticky",bottom:0,zIndex:20,display:"flex",justifyContent:"center",gap:12,padding:"12px 0",margin:"18px -2px 0",background:"rgba(255,255,255,.92)",backdropFilter:"blur(6px)",borderTop:"1px solid var(--border-default)"}}>
       {!reviewed&&<Button variant="outline" onClick={()=>setReviewed(true)}>Review Entry</Button>}
-      {reviewed&&<React.Fragment><Button variant="secondary" onClick={()=>setReviewed(false)}>Clear</Button><Button variant="primary" onClick={save}>Save</Button></React.Fragment>}
+      {reviewed&&<React.Fragment><Button variant="secondary" onClick={clearAll}>Clear</Button><Button variant="primary" onClick={save}>Save</Button></React.Fragment>}
     </div>
   </div>;
 }

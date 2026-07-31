@@ -2,16 +2,16 @@
 const FWi=window.FW;
 function InsightsTab(){
   const entries=FWi.entries;
-  if(entries.length<3)return <div style={{textAlign:"center",padding:"60px 0"}}><div style={{fontWeight:600,fontSize:"0.92rem",color:"var(--text-muted)",marginBottom:4}}>Not enough data for insights</div><div style={{fontSize:"0.82rem",color:"var(--text-ghost)"}}>Correlations need at least 3 logged days — or press "Load 30-day demo" to preview.</div></div>;
+  if(entries.length<5)return <div style={{textAlign:"center",padding:"60px 0"}}><div style={{fontWeight:600,fontSize:"0.92rem",color:"var(--text-muted)",marginBottom:4}}>Not enough data for insights</div><div style={{fontSize:"0.82rem",color:"var(--text-ghost)"}}>Need at least 5 entries to show correlations — you have {entries.length}. Log more days, or press "Load 30-day demo" to preview.</div></div>;
   const triggers=[
-    {label:"Stress",get:e=>e.lifestyle.stress},{label:"Sleep (h)",get:e=>e.lifestyle.sleepHours},
-    {label:"Alcohol",get:e=>e.lifestyle.alcohol},{label:"Exercise",get:e=>e.lifestyle.exercise},
-    {label:"Smoking",get:e=>e.lifestyle.smoking?1:0,binary:true},{label:"Infection",get:e=>e.lifestyle.infection?1:0,binary:true},
-    {label:"Skin trauma",get:e=>e.lifestyle.koebner?1:0,binary:true},
-    {label:"Temperature",get:e=>e.environment.temperature},{label:"Humidity",get:e=>e.environment.humidity},
-    {label:"PM2.5",get:e=>e.environment.pm25},{label:"PM10",get:e=>e.environment.pm10},{label:"NO₂",get:e=>e.environment.no2}];
+    {label:"Stress",get:e=>e.lifestyle?.stress},{label:"Sleep (h)",get:e=>e.lifestyle?.sleepHours},
+    {label:"Alcohol",get:e=>e.lifestyle?.alcohol},{label:"Exercise",get:e=>e.lifestyle?.exercise},
+    {label:"Smoking",get:e=>e.lifestyle?.smoking?1:0,binary:true},{label:"Infection",get:e=>e.lifestyle?.infection?1:0,binary:true},
+    {label:"Skin trauma",get:e=>e.lifestyle?.koebner?1:0,binary:true},
+    {label:"Temperature",get:e=>e.environment?.temperature},{label:"Humidity",get:e=>e.environment?.humidity},
+    {label:"PM2.5",get:e=>e.environment?.pm25},{label:"PM10",get:e=>e.environment?.pm10},{label:"NO₂",get:e=>e.environment?.no2}];
   const symptoms=["Itch","Pain","Redness","Scaling","Flare"];
-  const score=(e,n)=>n==="Flare"?(e.isFlareDay?1:0):e.symptoms.find(s=>s.name===n)?.score??null;
+  const score=(e,n)=>n==="Flare"?(e.isFlareDay?1:0):e.symptoms?.find(s=>s.name===n)?.score??null;
   const cells=[];
   triggers.forEach(t=>symptoms.forEach(sym=>{
     const pairs=entries.map(e=>({x:t.get(e),y:score(e,sym)})).filter(p=>p.x!=null&&p.y!=null);

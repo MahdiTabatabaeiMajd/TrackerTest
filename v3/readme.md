@@ -36,7 +36,7 @@ No icon font and no SVG icon set. The app's "icons" are (1) functional emoji (�
 - `components/core/` — Button, Chip, Badge, TabNav, SectionHeader, Toast
 - `components/forms/` — SliderRow, TriggerSlider, StepGroup, ToggleGroup, Field
 - `components/charts/` — TrendChart
-- `ui_kits/flarewatch/` — interactive recreation of the app (all 5 tabs)
+- `ui_kits/flarewatch/` — full working port of the app (all 5 tabs): real localStorage persistence (same keys as v2 — data is interchangeable between versions) and live geolocation + Open-Meteo fetch
 - `SKILL.md`, `github.md`
 
 ## Intentional additions (diverge from the shipped repo, at the owner's request)

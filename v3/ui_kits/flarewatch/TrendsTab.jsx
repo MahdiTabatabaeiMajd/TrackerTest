@@ -6,14 +6,14 @@ function TrendsTab(){
   if(entries.length===0)return <div style={{textAlign:"center",padding:"60px 0"}}><div style={{fontWeight:600,fontSize:"0.92rem",color:"var(--text-muted)",marginBottom:4}}>No data to chart yet</div><div style={{fontSize:"0.82rem",color:"var(--text-ghost)"}}>Log a few days in the Log tab — or press "Load 30-day demo" to preview.</div></div>;
   const dates=entries.map(e=>e.date.slice(5));
   const defs=[
-    {key:"itch",title:"Itch",cat:"symptom",max:10,color:CHART_COLORS.itch,scores:entries.map(e=>e.symptoms[0].score)},
-    {key:"pain",title:"Pain",cat:"symptom",max:10,color:CHART_COLORS.pain,scores:entries.map(e=>e.symptoms[1].score)},
-    {key:"redness",title:"Redness",cat:"symptom",max:10,color:CHART_COLORS.redness,scores:entries.map(e=>e.symptoms[2].score)},
-    {key:"scaling",title:"Scaling",cat:"symptom",max:10,color:CHART_COLORS.scaling,scores:entries.map(e=>e.symptoms[3].score)},
-    {key:"stress",title:"Stress",cat:"trigger",max:10,color:CHART_COLORS.stress,scores:entries.map(e=>e.lifestyle.stress)},
-    {key:"sleep",title:"Sleep (h)",cat:"trigger",max:12,color:CHART_COLORS.sleep,scores:entries.map(e=>e.lifestyle.sleepHours)},
-    {key:"pm25",title:"PM2.5",cat:"trigger",max:60,color:CHART_COLORS.pm25,scores:entries.map(e=>e.environment.pm25)},
-    {key:"humidity",title:"Humidity (%)",cat:"trigger",max:100,color:CHART_COLORS.humidity,scores:entries.map(e=>e.environment.humidity)}];
+    {key:"itch",title:"Itch",cat:"symptom",max:10,color:CHART_COLORS.itch,scores:entries.map(e=>e.symptoms[0]?.score??null)},
+    {key:"pain",title:"Pain",cat:"symptom",max:10,color:CHART_COLORS.pain,scores:entries.map(e=>e.symptoms[1]?.score??null)},
+    {key:"redness",title:"Redness",cat:"symptom",max:10,color:CHART_COLORS.redness,scores:entries.map(e=>e.symptoms[2]?.score??null)},
+    {key:"scaling",title:"Scaling",cat:"symptom",max:10,color:CHART_COLORS.scaling,scores:entries.map(e=>e.symptoms[3]?.score??null)},
+    {key:"stress",title:"Stress",cat:"trigger",max:10,color:CHART_COLORS.stress,scores:entries.map(e=>e.lifestyle?.stress??null)},
+    {key:"sleep",title:"Sleep (h)",cat:"trigger",max:12,color:CHART_COLORS.sleep,scores:entries.map(e=>e.lifestyle?.sleepHours??null)},
+    {key:"pm25",title:"PM2.5",cat:"trigger",max:60,color:CHART_COLORS.pm25,scores:entries.map(e=>e.environment?.pm25??null)},
+    {key:"humidity",title:"Humidity (%)",cat:"trigger",max:100,color:CHART_COLORS.humidity,scores:entries.map(e=>e.environment?.humidity??null)}];
   const bands=FWt.treatments.map((t,ti)=>{
     const end=t.stopDate||"9999-12-31";
     let s=entries.findIndex(e=>e.date>=t.startDate);if(s<0)return null;

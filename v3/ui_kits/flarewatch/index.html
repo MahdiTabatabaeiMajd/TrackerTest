@@ -91,11 +91,23 @@
           setToast("Entry saved ✓");
           setTimeout(() => setToast(null), 2200);
         };
+        // Any FW data mutation (save/delete/archive/demo) bumps dataV, which
+        // re-mounts the active tab so it re-reads the storage-backed arrays.
+        React.useEffect(() => {
+          window.FW.onDataChange = () => setDataV((v) => v + 1);
+          return () => {
+            window.FW.onDataChange = null;
+          };
+        }, []);
         const loadDemo = () => {
-          const d = window.FW.generateDemo();
-          window.FW.entries = d.entries;
-          window.FW.treatments = d.treatments;
-          setDataV((v) => v + 1);
+          if (
+            window.FW.entries.length > 0 &&
+            !confirm(
+              "This will overwrite your existing entries with demo data. Continue?",
+            )
+          )
+            return;
+          window.FW.loadDemo();
           setToast("30-day demo loaded — 3 treatments added");
           setTimeout(() => setToast(null), 2600);
         };
