@@ -48,7 +48,9 @@ window.FW.entries=loadLog();
 window.FW.treatments=loadTreatments();
 window.FW.onDataChange=null;
 function refresh(){window.FW.entries=loadLog();window.FW.treatments=loadTreatments();if(window.FW.onDataChange)window.FW.onDataChange()}
-window.FW.addEntry=function(entry){const e=loadLog();e.push(entry);saveLog(e);refresh()};
+// Keep the log sorted by date — entries can be backfilled out of order, and
+// History (newest-first) and Trends/bands (chronological) both assume order.
+window.FW.addEntry=function(entry){const e=loadLog();e.push(entry);e.sort((a,b)=>a.date.localeCompare(b.date));saveLog(e);refresh()};
 window.FW.deleteEntry=function(idx){const e=loadLog();e.splice(idx,1);saveLog(e);refresh()};
 window.FW.archiveCount=function(){return loadArchive().length};
 // Archive-all keeps any existing archive and sorts by date (v2 semantics)

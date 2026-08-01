@@ -2,7 +2,10 @@
 const {TrendChart,CHART_COLORS,Button}=window.FlareWatchDesignSystem_d30d0f;
 const FWt=window.FW;
 function TrendsTab(){
-  const entries=FWt.entries.slice(-14);
+  // Sort defensively: data saved before addEntry kept the log sorted (or saved
+  // by v2) can be in save order, not date order — the x-axis and the treatment
+  // band index lookups below both require chronological entries.
+  const entries=FWt.entries.slice().sort((a,b)=>a.date.localeCompare(b.date)).slice(-14);
   if(entries.length===0)return <div style={{textAlign:"center",padding:"60px 0"}}><div style={{fontWeight:600,fontSize:"0.92rem",color:"var(--text-muted)",marginBottom:4}}>No data to chart yet</div><div style={{fontSize:"0.82rem",color:"var(--text-ghost)"}}>Log a few days in the Log tab — or press "Load 30-day demo" to preview.</div></div>;
   const dates=entries.map(e=>e.date.slice(5));
   const defs=[
