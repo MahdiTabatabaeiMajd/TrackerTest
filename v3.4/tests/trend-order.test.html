@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="UTF-8"><title>Regression test — trend date order</title><style>body{margin:0}iframe{border:0;width:700px;height:900px}</style></head>
+<body><iframe id="f" src="../ui_kits/flarewatch/index.html"></iframe><pre id="results">pending</pre>
+<script>
+const out=[];const log=m=>{out.push(m);document.getElementById('results').textContent=out.join('\n')};
+const fr=document.getElementById('f');
+function btn(w,txt){return [...w.document.querySelectorAll('button')].find(b=>b.textContent.trim()===txt)}
+function poll(cond,cb,tries){var n=0;var iv=setInterval(function(){var r;try{r=cond()}catch(e){}if(r){clearInterval(iv);cb(r)}else if(++n>tries){clearInterval(iv);cb(null)}},200)}
+function mkEntry(date,itch){return{date:date,symptoms:[{name:"Itch",score:itch,parts:[]},{name:"Pain",score:2,parts:[]},{name:"Redness",score:3,parts:[]},{name:"Scaling",score:1,parts:[]}],isFlareDay:false,lifestyle:{stress:4,sleepHours:7,alcohol:0,exercise:1,smoking:0,infection:0,koebner:0},environment:null}}
+fr.addEventListener('load',function once(){
+  fr.removeEventListener('load',once);
+  const w=fr.contentWindow;
+  w.confirm=()=>true;w.alert=m=>log('ALERT: '+m);
+  w.localStorage.clear();
+  poll(()=>btn(w,'Load 30-day demo'),function(ok){
+    if(!ok){log('FAIL: app did not render');return}
+    // Reproduce the user's scenario: newest day logged FIRST, then backfilled
+    w.FW.addEntry(mkEntry("2026-07-15",8));
+    w.FW.addEntry(mkEntry("2026-07-10",2));
+    w.FW.addEntry(mkEntry("2026-07-11",3));
+    w.FW.addEntry(mkEntry("2026-07-12",5));
+    w.FW.addEntry(mkEntry("2026-07-13",6));
+    w.FW.addTreatment({id:"t-band",type:"topical",potencyClass:"Mild — Class VII",biologicClass:null,drug:"Hydrocortisone 1%",bodyAreas:[],startDate:"2026-07-11",stopDate:"2026-07-13",notes:""});
+    const trends=btn(w,'Trends');if(!trends){log('FAIL: no Trends tab');return}
+    trends.click();
+    poll(()=>{
+      const svgs=[...w.document.querySelectorAll('svg')];
+      return svgs.find(s=>[...s.querySelectorAll('text')].some(t=>/^\d{2}-\d{2}$/.test(t.textContent)));
+    },function(chart){
+      if(!chart){log('FAIL: no chart rendered');return}
+      const labels=[...chart.querySelectorAll('text')].map(t=>t.textContent).filter(t=>/^\d{2}-\d{2}$/.test(t));
+      const sorted=labels.slice().sort();
+      const asc=JSON.stringify(labels)===JSON.stringify(sorted);
+      log((asc?'PASS':'FAIL')+': x-axis dates ascending — got ['+labels.join(', ')+']');
+      // Treatment band: entries sorted → band spans index 1 (07-11) to 3 (07-13)
+      // Chart geometry: xOf(i)=24+(i/4)*250 → x1≈86.5, width≈125
+      const band=chart.querySelector('rect[fill-opacity="0.13"]');
+      if(!band){log('FAIL: no treatment band rect on symptom chart')}
+      else{
+        const x=parseFloat(band.getAttribute('x')),wd=parseFloat(band.getAttribute('width'));
+        const bandOk=Math.abs(x-86.5)<2&&Math.abs(wd-125)<3;
+        log((bandOk?'PASS':'FAIL')+': treatment band position — x='+x.toFixed(1)+' (want ≈86.5), width='+wd.toFixed(1)+' (want ≈125)');
+      }
+      // History should list newest date first
+      const hist=btn(w,'History');hist.click();
+      poll(()=>[...w.document.querySelectorAll('span')].filter(s=>/^\d{4}-\d{2}-\d{2}$/.test(s.textContent)),function(dates){
+        if(!dates||!dates.length){log('FAIL: no history cards');log('DONE');return}
+        const first=dates[0].textContent;
+        log((first==="2026-07-15"?'PASS':'FAIL')+': history newest-first — top card is '+first+' (want 2026-07-15)');
+        log('DONE');
+      },25);
+    },30);
+  },60);
+});
+</script></body></html>

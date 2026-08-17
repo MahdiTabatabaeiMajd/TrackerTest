@@ -1,0 +1,4 @@
+/* FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences */
+body{font-family:var(--font-ui);color:var(--text-strong)}
+a{color:var(--brand-blue);text-decoration:none}
+a:hover{color:var(--brand-blue-deep);text-decoration:underline}

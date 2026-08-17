@@ -1,0 +1,31 @@
+/* FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences */
+/* Responsive layout tokens. Components use inline styles, which media
+   queries cannot target — so every value that must change on small
+   screens lives here as a variable, and the single breakpoint below
+   re-maps them. Import this file last so its overrides win. */
+:root{
+--grid-2col:1fr 1fr;          /* two-up card grids (Log, Trends, Insights) */
+--page-pad:32px 16px 60px;    /* body padding around the app card */
+--app-title-size:1.8rem;
+--panel-min-h:640px;          /* tab panel min-height */
+--header-clear:0px;           /* clearance under the absolute demo button */
+--tab-font:0.8rem;
+--tab-pad:11px 2px;
+}
+@media (max-width:600px){
+:root{
+--grid-2col:1fr;              /* card grids collapse to one column */
+--page-pad:12px 8px 48px;
+--app-pad-x:16px;             /* overrides spacing.css container padding */
+--app-pad-y:22px;
+--radius-container:18px;
+--app-title-size:1.5rem;
+--panel-min-h:0px;
+--header-clear:36px;          /* header drops below the demo button */
+--tab-font:0.72rem;
+--tab-pad:9px 1px;
+}
+}
+/* TabNav rail scrolls sideways if tabs still outgrow it (WebKit bar off;
+   Firefox handled by scrollbar-width:none inline) */
+nav::-webkit-scrollbar{display:none}

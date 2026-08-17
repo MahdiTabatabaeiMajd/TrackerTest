@@ -1,0 +1,9 @@
+/* FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences */
+:root{
+/* Spacing — values verbatim from css/v2.css */
+--space-1:4px;--space-2:6px;--space-3:8px;--space-4:10px;--space-5:12px;--space-6:14px;--space-7:16px;--space-8:18px;--space-9:20px;--space-10:26px;--space-11:32px;--space-12:36px;
+/* Radii */
+--radius-container:24px;--radius-section:18px;--radius-panel:16px;--radius-card:14px;--radius-notice:12px;--radius-input:10px;--radius-select:9px;--radius-control:8px;--radius-tab:10px;--radius-pill:50px;--radius-chip:20px;
+/* Layout */
+--app-max-width:700px;--app-pad-x:32px;--app-pad-y:36px;
+}

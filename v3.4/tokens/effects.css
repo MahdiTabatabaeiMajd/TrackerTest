@@ -1,0 +1,15 @@
+/* FlareWatch v3 — © 2026 Mahdi Tabatabaei · INIA Biosciences */
+:root{
+/* Shadows — verbatim from css/v2.css */
+--shadow-container:0 8px 40px rgba(46,115,150,0.16);--shadow-card:0 1px 4px rgba(0,0,0,0.04);--shadow-indicator:0 1px 6px rgba(0,0,0,0.08);--shadow-popover:0 6px 24px rgba(0,0,0,0.12);--shadow-toast:0 4px 16px rgba(0,0,0,0.15);--shadow-action:0 3px 12px rgba(33,166,149,0.4);
+/* Borders */
+--border-w:1.5px; /* @kind spacing */
+--border-w-heavy:2px; /* @kind spacing */
+--border-dashed:2px dashed #cbd5e0; /* @kind other */
+/* Motion */
+--ease-tab:cubic-bezier(0.4,0,0.2,1); /* @kind other */
+--dur-tab:0.30s; /* @kind other */
+--dur-panel:0.3s; /* @kind other */
+--dur-hover:0.15s; /* @kind other */
+--dur-press:0.1s; /* @kind other */
+}
